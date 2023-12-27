@@ -1,0 +1,262 @@
+<!-- Header file's common part -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- =====  CSS ========= -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <!-- =====  CSS ========= -->
+    <!-- <link rel="stylesheet" href="./assets/css/registration.css"> -->
+    
+    <!-- ===== Iconscout CSS ====== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    
+
+    <title>Dashboard</title>
+</head>
+<body>
+    
+    <nav>
+        <div class="logo-name">
+            <div class = "logo-image">
+                <img src="../assets/images/logo.png" alt="">
+            </div>
+
+            <span class="logo_name">HMS</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li>
+                    <a href="./index.html">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./patients_appointments.html">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Patient's&nbsp;Appointments</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./add_nurse.html">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Add&nbsp;Nurse</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./add_receptionist.html">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Add&nbsp;Receptionist</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./patients_list.html">
+                        <i class="uil uil-chart"></i>
+                        <span class="link-name">Patients&nbsp;Lists</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./nurses_list.html">
+                        <i class="uil uil-chart"></i>
+                        <span class="link-name">Nurse&nbsp;Lists</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./receptionists_list.html">
+                        <i class="uil uil-chart"></i>
+                        <span class="link-name">Receptionist&nbsp;Lists</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./doctors_list.html">
+                        <i class="uil uil-chart"></i>
+                        <span class="link-name">Doctors&nbsp;Lists</span>
+                    </a>
+                </li>
+
+            </ul>
+
+            <ul class="logout-mode">
+                <li class = "logout-btns">
+                    <form action="" method = "POST">
+                        <div>
+                            <i class="uil uil-signout"></i>
+                            <input type="submit" name = "logout" value="Logout">
+                        </div>
+                    </form>
+                </li>
+                <li class = "mode">
+                    <a href="">
+                        <i class="uil uil-moon"></i>
+                        <span class="link-name">Dark Mode</span>
+                    </a>
+
+                    <div class="mode-toggle">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+            <div class="search-box">
+                <i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here....">
+            </div>
+            <div id = "model-open">
+                <div>
+                    username
+                </div>
+                <img src="../assets/images/profile.png">                    
+                <i class="uil uil-angle-down"></i>
+            </div>
+        </div>
+        <div id="model-box">
+            <a href = "./setting_page.html">Settings</a>
+        </div>
+
+<!-- header file's common part ends here -->
+    
+
+        <div class="dash-content">
+
+            <div class="activity">
+                <div class="title">
+                    <i class="uil uil-clock-two"></i>
+                    <span class="text">Receptionist's Lists</span>
+                </div>
+
+                <div id = "result-data">
+                    <div class="success-result"></div>
+                    <div class="error-result"></div>
+                </div>
+
+
+                <table class="activity-data">
+                    <thead>
+                        <tr>
+                            <th class="data names">
+                                <div class="data-title">Name</div>
+                            </th>
+                            <th class="data email">
+                                <div class="data-title">E-mail</div>
+                            </th>
+                            <th class="data email">
+                                <div class="data-title">dob</div>
+                            </th>
+                            <th class="data status">
+                                <div class="data-title">Action</div>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        
+
+                        <!-- This table body data will be fetched by dynamically -->
+                        <tr>
+                            <td class="data names">
+                                <div class="data-list">---</div>
+                            </td>
+                            <td class="data email">
+                                <div class="data-list">----</div>
+                            </td>
+                            <td class="data email">
+                                <div class="data-list">----</div>
+                            </td>
+                            <td class="data status">
+                                <div class="data-list">
+                                    <a href="" id = "remove_id" data-rid = "">Remove</a>
+                                    <a href="">Update</a>
+                                </div>
+                            </td>
+                        </tr>
+                
+                        
+                        
+                        <!-- Else part -->
+                        <tr>
+                            <td class="data names" colspan="5" style="text-align: center">
+                                <div class="data-list">No records Found</div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+<!-- footer file's start here -->
+    </section>
+
+
+
+    <!-- ======= external js link ======== -->
+    <script src="assets/js/script.js"></script>
+
+    <!-- ======== jquery link ========= -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <!-- ajax code -->
+    <script>
+        $(document).ready(function(){
+           
+            // editing record data from table
+            $(document).on("click", "#edit", function(){
+                $("#model").show();
+            });
+
+            // closing popup box
+            $(document).on("click",".close-btn", function(){
+                $("#model").hide();
+            });
+
+            // setting button for profile page
+            $("#model-box").hide();
+            $("#model-open").on("click", function(){
+                $("#model-box").fadeToggle();
+            });
+
+            // Remove receptionist from database 
+
+            $(document).on("click", "#remove_id", function(){
+                var id = $(this).data('rid');
+                // console.log(id);
+                // alert(id);
+                $.ajax({
+                    url : "remove.html",
+                    method : "POST",
+                    data : {id : id},
+                    success : function(data){
+                        if(data == '1'){
+                            location.reload(true);
+                        }else{
+                            alert("Data not removed");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+            
+</body>
+</html>

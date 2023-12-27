@@ -1,2 +1,2 @@
-# HMS
-This is a hospital management system project
+# HMS_template
+This repo consists templates

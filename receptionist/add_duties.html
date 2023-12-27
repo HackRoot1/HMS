@@ -1,0 +1,220 @@
+<!-- Header file's common part -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- =====  CSS ========= -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <!-- =====  CSS ========= -->
+    <link rel="stylesheet" href="../assets/css/registration.css">
+    
+    <!-- ===== Iconscout CSS ====== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    
+
+    <title>Dashboard</title>
+</head>
+<body>
+    
+    <nav>
+        <div class="logo-name">
+            <div class = "logo-image">
+                <img src="../assets/images/logo.png" alt="">
+            </div>
+
+            <span class="logo_name">HMS</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li>
+                    <a href="./index.html">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Dashboard</span>
+                    </a>
+                </li>
+                    
+                <li>
+                    <a href="./make_appointments.html">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Make&nbsp;Appointments</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./add_duties.html">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Add&nbsp;Duties</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="./history.html">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">History</span>
+                    </a>
+                </li>
+
+            </ul>
+
+            <ul class="logout-mode">
+                <li class = "logout-btns">
+                    <form action="" method = "POST">
+                        <div>
+                            <i class="uil uil-signout"></i>
+                            <input type="submit" name = "logout" value="Logout">
+                        </div>
+                    </form>
+                </li>
+                <li class = "mode">
+                    <a href="">
+                        <i class="uil uil-moon"></i>
+                        <span class="link-name">Dark Mode</span>
+                    </a>
+
+                    <div class="mode-toggle">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+            <div class="search-box">
+                <i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here....">
+            </div>
+            <div id = "model-open">
+                <div>
+                    UserName
+                </div>
+                <img src="../assets/images/<?php echo $data['profile_pic']; ?>">                    
+                <i class="uil uil-angle-down"></i>
+            </div>
+        </div>
+        <div id="model-box">
+            <a href = "./setting_page.html">Settings</a>
+        </div>
+
+<!-- header file's common part ends here -->
+    
+
+        <div class="dash-content">
+            <div class="overview">
+                <div class="title">
+                    <i class="uil uil-tachometer-fast-alt"></i>
+                    <span class="text">Add Duties</span>
+                </div>
+            </div>
+
+            <div id = "result-data">
+                <div class="success-result"></div>
+                <div class="error-result"></div>
+            </div>
+
+            <form action="" method="POST" id = "form-data">
+                <!-- pre-filled fields data get from database -->
+                <div>
+                    <label for="fname">First Name</label>
+                    <input type="text" id = "fname" name = "fname" value = "" disabled>
+                </div>
+                <div>
+                    <label for="lname">Last Name</label>
+                    <input type="text" id = "lname" name = "lname" value = "" disabled>
+                </div>
+                <div>
+                    <label for="email">E-mail</label>
+                    <input type="text" id = "email" name = "email" value = "" disabled>
+                </div>
+                
+                <!-- following records will update in database -->
+                <div>
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id = "dob" name = "dob">
+                </div>
+                <div>
+                    <label for="m_no">Contact No.:</label>
+                    <input type="text" id = "m_no" name = "m_no">
+                </div>
+                
+                <div>
+                    <label for="gender">Gender</label>
+                    <input type="text" id = "gender" name = "gender">
+                </div>
+                <div>
+                    <label for="address">Address</label>
+                    <input type="text" id = "address" name = "address">
+                </div>
+                
+                <div>
+                    <label for="blood-grp">Blood Group</label>
+                    <input type="text" id = "blood-grp" name = "blood-grp">
+                </div>
+                <div>
+                    <label for="decease">Decease</label>
+                    <input type="text" id = "decease" name = "decease">
+                </div>
+                <div>
+                    <label for="symptoms">Symptoms</label>
+                    <input type="text" id = "symptoms" name = "symptoms">
+                </div>
+                <div>
+                    <label for="medical_history">medical_history</label>
+                    <input type="text" id = "medical_history" name = "medical_history">
+                </div>
+
+                <div class = "form-btn">
+                    <input type="reset" name = "reset">
+                    <input type="submit" value="Submit" name = "book_appointment">
+                </div>
+            </form>
+    
+        </div>
+
+
+
+<!-- footer file's start here -->
+    </section>
+
+
+
+    <!-- ======= external js link ======== -->
+    <script src="../assets/js/script.js"></script>
+
+    <!-- ======== jquery link ========= -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <!-- ajax code -->
+    <script>
+        $(document).ready(function(){
+           
+            // editing record data from table
+            $(document).on("click", "#edit", function(){
+                $("#model").show();
+            });
+
+            // closing popup box
+            $(document).on("click",".close-btn", function(){
+                $("#model").hide();
+            });
+
+            // setting button for profile page
+            $("#model-box").hide();
+            $("#model-open").on("click", function(){
+                $("#model-box").fadeToggle();
+            });
+        });
+    </script>
+
+            
+</body>
+</html>
+
+
