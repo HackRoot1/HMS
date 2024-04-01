@@ -2,7 +2,6 @@
     
     // ==================== roles 
     $path = "../";
-
     include("./roles.php");
     include("../header.php");
 
@@ -14,7 +13,7 @@
             <div class="activity">
                 <div class="title">
                     <i class="uil uil-clock-two"></i>
-                    <span class="text">Schedule</span>
+                    <span class="text">Upcoming Appointments</span>
                 </div>
 
                 <div id = "result-data">
@@ -22,14 +21,18 @@
                     <div class="error-result"></div>
                 </div>
 
-                <table class="activity-data" style = "overflow-x: auto;">
+                <table class="activity-data">
 
                     <thead>
                         <tr>
-                            <th class="data email">
-                                <div class="data-title">Patient's Name</div>
+                            <th class="data names">
+                                <?php if($fetch_user_data['role'] == "patient"): ?>
+                                    <div class="data-title">Name</div>
+                                <?php else: ?>
+                                        <div class="data-title">Patient's Name</div>
+                                <?php endif; ?>
                             </th>
-                            <th class="data joined">
+                            <th class="data email">
                                 <div class="data-title">Decease</div>
                             </th>
                             <th class="data joined">
@@ -59,15 +62,15 @@
                         
                         <!-- This table body data will be fetched by dynamically -->
                         <tr>
-                            
                             <td class="data names">
                                 <div class="data-list">
                                     <?php 
-                                        // getting data from user's table if any user role is logged in 
-                                        $sql = "SELECT * FROM users_data WHERE id = {$data['patient_id']}";
-                                        $query = mysqli_query($conn, $sql);
-                                        $value = mysqli_fetch_assoc($query);
-                                        echo $value['firstName'] . " " . $value['lastName'];
+                                        if($fetch_user_data['role'] == "patient"):
+                                            echo $fetch_user_data['firstName'] ." ". $fetch_user_data['lastName']; 
+                                        else: 
+                                            $patient_details = get_user_data($conn, $data['patient_id']);
+                                            echo($patient_details['firstName'] ." " . $patient_details['lastName']);
+                                        endif; 
                                     ?>
                                 </div>
                             </td>
@@ -78,10 +81,10 @@
                                 <div class="data-list"><?php echo $data['symptoms'] ?></div>
                             </td>
                             <td class="data type">
-                                <div class="data-list"><?php echo $data['appointment_date'] ?></div>
+                                <div class="data-list"><?php echo $data['appointment_date'] != "0000-00-00" ? $data['appointment_date'] : "---" ?></div>
                             </td>
                             <td class="data type">
-                                <div class="data-list"><?php echo $data['appointment_time'] ?></div>
+                                <div class="data-list"><?php echo $data['appointment_time'] != "00:00:00" ? $data['appointment_time'] : "---" ?></div>
                             </td>
                             <td class="data status">
                                 <div class="data-list">

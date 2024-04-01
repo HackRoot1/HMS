@@ -4,13 +4,13 @@
         // session_start();
         include("config.php");
 
-        $user = $_POST['username'];
-        $pass = $_POST['password'];
+        $user = mysqli_real_escape_string($conn, $_POST['username']);
+        $pass = mysqli_real_escape_string($conn, $_POST['password']);
 
         $query = "SELECT * FROM users_data WHERE (email = '{$user}' AND password = '{$pass}')";
         $result = mysqli_query($conn, $query) or die("Query Failed of login page");
 
-        if(mysqli_num_rows($result) > 0){
+        if(mysqli_num_rows($result) > 0 && mysqli_num_rows($result) == 1){
             session_start();
             session_unset();
             $data = mysqli_fetch_assoc($result);
@@ -21,19 +21,20 @@
             while($data = mysqli_fetch_assoc($result)){
                 echo $data['email'];
             }
-
+            
             echo "Database Conflict";
         }
     }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
     <style>
@@ -48,6 +49,24 @@
             background: linear-gradient(to right, rgb(147, 224, 239) 50%, rgb(6, 51, 107) 50%);
         }
 
+        #error{
+            position: absolute;
+            top: 10vh;
+            left: 40vw;
+            right: 40vw;
+            bottom: 0;
+            height: 50px;
+            width: 20vw;
+            background-color: red;
+            color: white;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            border-radius: 5px;
+            border: 1px solid red;
+        }
         #login-section{
             background-color: aliceblue;
             height: 90vh;
@@ -184,8 +203,12 @@
         }
 
     </style>
+
 </head>
 <body>
+
+    <section id = "error">Please Login Again</section>
+
     <section id = "login-section">
         <div id = "login-details">
             <div class = "login-logo">Logo</div>
@@ -205,11 +228,11 @@
                     <input type="password" name = "password" placeholder="Your Password">
                     <div id = "remember">
                         <div>
-                            <input type="checkbox" name="" id="logged">
+                            <input type="checkbox" id="logged">
                             <label for="logged">Keep me logged in</label>
                         </div>
                         <div class = "forgot">
-                            <a href="">Forgot Password</a>
+                            <a href="#">Forgot Password</a>
                         </div>
                     </div>
                     <div>
@@ -230,7 +253,16 @@
         <div id = "login-decor">
             <img src="./assets/images/illustration2.png" alt="">
         </div>
+        
     </section>
+
+    <script>
+
+        $(document).ready(function (){
+            $("#error").hide();
+        });
+
+    </script>
 </body>
 </html>
 

@@ -1,5 +1,9 @@
 <?php 
+    
+    // ==================== roles 
+    $path = "../";
 
+    include("./roles.php");
     include("../header.php");
     include("../generate_pass.php");
 

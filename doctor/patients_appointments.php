@@ -1,23 +1,11 @@
 <?php 
+    
+    // ==================== roles 
+    $path = "../";
 
+    include("./roles.php");
     include("../header.php");
 
-
-    // getting all user data - the user is one who is logged in
-    $query = get_all_user_data($conn, $_SESSION['user']);
-    $fetch_user_data = mysqli_fetch_assoc($query);
-
-    if($fetch_user_data['role'] == 'patient'){
-        $patient_data = get_only_logged_patient_data($conn, $fetch_user_data['id']);
-    }else if($fetch_user_data['role'] == 'nurse'){
-        $patient_data = get_all_patient_data_on_roles($conn, 'nurse_id', $fetch_user_data['id']);
-    }else if($fetch_user_data['role'] == 'receptionist'){
-        $patient_data = get_all_patient_data_on_roles($conn, 'receptionist_id', $fetch_user_data['id']);
-    }else if($fetch_user_data['role'] == 'doctor'){
-        $patient_data = get_all_patient_data_on_roles($conn, 'doctor_id', $fetch_user_data['id']);
-    }else if($fetch_user_data['role'] == 'admin'){
-        get_all_patients_data($conn);
-    }
 ?>
 <!-- header file's common part ends here -->
     
@@ -39,17 +27,11 @@
                     <thead>
                         <tr>
                             <th class="data names">
-                                <?php 
-                                    if($fetch_user_data['role'] == "patient"){
-                                ?>
+                                <?php if($fetch_user_data['role'] == "patient"): ?>
                                     <div class="data-title">Name</div>
-                                <?php 
-                                    }else{
-                                ?>
+                                <?php else: ?>
                                         <div class="data-title">Patient's Name</div>
-                                <?php 
-                                    }
-                                ?>
+                                <?php endif; ?>
                             </th>
                             <th class="data email">
                                 <div class="data-title">Decease</div>
@@ -84,11 +66,12 @@
                             <td class="data names">
                                 <div class="data-list">
                                     <?php 
-                                        // getting data from user's table if any user role is logged in 
-                                        $sql = "SELECT * FROM users_data WHERE id = {$data['patient_id']}";
-                                        $query = mysqli_query($conn, $sql);
-                                        $value = mysqli_fetch_assoc($query);
-                                        echo $value['firstName'] . " " . $value['lastName'];
+                                        if($fetch_user_data['role'] == "patient"):
+                                            echo $fetch_user_data['firstName'] ." ". $fetch_user_data['lastName']; 
+                                        else: 
+                                            $patient_details = get_user_data($conn, $data['patient_id']);
+                                            echo($patient_details['firstName'] ." " . $patient_details['lastName']);
+                                        endif; 
                                     ?>
                                 </div>
                             </td>
@@ -106,13 +89,13 @@
                             </td>
                             <td class="data status">
                                 <div class="data-list">
-                                    <?php 
-                                        // echo $data['doctor_id'] != "0" ? $data['doctor_id'] : "---" 
-                                    ?>
                                     <?php  
                                         $doctor_details = get_user_data($conn, $data['doctor_id']);
-                                        $doctor = mysqli_fetch_assoc($doctor_details);
-                                        echo $doctor['firstName'] . " " . $doctor['lastName'];
+                                        if(isset($doctor_details)):
+                                            echo $doctor_details['firstName'] . " " . $doctor_details['lastName'];
+                                        else:
+                                            echo "---";
+                                        endif;
                                     ?>
                                 </div>
                             </td>

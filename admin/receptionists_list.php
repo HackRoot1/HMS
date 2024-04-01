@@ -6,7 +6,7 @@
     include("./roles.php");
     include("../header.php");
 
-    
+
 ?>
 
 <!-- header file's common part ends here -->
@@ -17,7 +17,7 @@
             <div class="activity">
                 <div class="title">
                     <i class="uil uil-clock-two"></i>
-                    <span class="text">Nurses Lists</span>
+                    <span class="text">Receptionist's Lists</span>
                 </div>
 
                 <div id = "result-data">
@@ -36,10 +36,7 @@
                                 <div class="data-title">E-mail</div>
                             </th>
                             <th class="data email">
-                                <div class="data-title">Shift</div>
-                            </th>
-                            <th class="data joined">
-                                <div class="data-title">Contact</div>
+                                <div class="data-title">dob</div>
                             </th>
                             <th class="data status">
                                 <div class="data-title">Action</div>
@@ -50,29 +47,30 @@
                     <tbody>
                         
                         <?php 
-                            if(mysqli_num_rows($list_of_nurses) > 0){
-                                while($data = mysqli_fetch_assoc($list_of_nurses)){
+                            if(mysqli_num_rows($list_of_receptionists) > 0){
+                                while($data = mysqli_fetch_assoc($list_of_receptionists)){
                         ?> 
                         
                         <!-- This table body data will be fetched by dynamically -->
                         <tr>
                             <td class="data names">
                                 <div class="data-list">
-                                    <?php echo $data['firstName'] . " " . $data['lastName'] ?>
+                                    <?php 
+                                        echo $data['firstName'] . " " . $data['lastName'];
+                                    ?>
                                 </div>
                             </td>
                             <td class="data email">
                                 <div class="data-list"><?php echo $data['email'] ?></div>
                             </td>
                             <td class="data email">
-                                <div class="data-list"><?php echo $data['shift'] ?></div>
-                            </td>
-                            <td class="data email">
-                                <div class="data-list"><?php echo $data['contact_no'] ?></div>
+                                <div class="data-list"><?php echo $data['dob'] ?></div>
                             </td>
                             <td class="data status">
                                 <div class="data-list">
-                                    <a href="">View</a>
+                                    <a href="">
+                                        View
+                                    </a>
                                 </div>
                             </td>
                         </tr>

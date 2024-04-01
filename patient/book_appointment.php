@@ -1,10 +1,15 @@
-
 <?php 
     
+    // ==================== roles 
+    $path = "../";
+    $display = "display: none;";
+    
+    include("./roles.php");
     include("../header.php");
-
-
+    
     $id = $fetch_user_data['id'];
+
+
     if(isset($_POST['book_appointment'])){
 
         $blood_group  = $_POST['blood_group'];
@@ -126,8 +131,6 @@
         </form>
 
     </div>
-
-
 
 
     

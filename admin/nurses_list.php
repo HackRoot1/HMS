@@ -6,7 +6,6 @@
     include("./roles.php");
     include("../header.php");
 
-    
 ?>
 
 <!-- header file's common part ends here -->

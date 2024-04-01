@@ -1,38 +1,111 @@
 <?php 
 
-    include("../config.php");
-    include("../db_queries.php");
-    // include("../generate_pass.php");
-
-    session_start();
-    
-    if(!$_SESSION['user']){
-        header("Location: ../login.php");
-    }
-    if(isset($_POST['logout'])){
-        session_unset();
-        session_destroy();
-        header('Location: ../login.php');
-        exit();
-    }
+    include($path . "config.php");
+    include($path ."db_queries.php");
+    include($path ."session.php");
 
     // getting all user data - the user is one who is logged in
     $query = get_all_user_data($conn, $_SESSION['user']);
     $fetch_user_data = mysqli_fetch_assoc($query);
 
-    if($fetch_user_data['role'] == 'patient'){
-        $patient_data = get_only_logged_patient_data($conn, $fetch_user_data['id']);
-    }else if($fetch_user_data['role'] == 'nurse'){
-        $patient_data = get_all_patient_data_on_roles($conn, 'nurse_id', $fetch_user_data['id']);
-    }else if($fetch_user_data['role'] == 'receptionist'){
-        $patient_data = get_all_patient_data_on_roles($conn, 'receptionist_id', $fetch_user_data['id']);
-    }else if($fetch_user_data['role'] == 'doctor'){
-        $patient_data = get_all_patient_data_on_roles($conn, 'doctor_id', $fetch_user_data['id']);
-    }else if($fetch_user_data['role'] == 'admin'){
-        get_all_patients_data($conn);
+
+    // ======================================================== Automatically update status of patient ======================================
+    date_default_timezone_set("Asia/Kolkata");
+    $date = date("Y-m-d");        
+    // get current time
+    $time = date("h:i:s");
+
+    $date_modify = get_medical_details_of_all_patients($conn);
+    $date_data = mysqli_fetch_array($date_modify);
+
+
+    if($date_data['appointment_date'] >= $date) {
+        if($date_data['appointment_date'] == $date && $date_data['appointment_time'] > $time) {
+            $update_query = "UPDATE `patients_medical_details` SET status = 'completed' WHERE appointment_date < '{$date}' AND appointment_date <> '0000-00-00'";
+            mysqli_query($conn, $update_query);
+            // mysqli_close($conn);
+        }
     }
 
+    // ======================================================================= end ===============================================
 
+
+
+
+    if($fetch_user_data['role'] == 'patient'){
+        
+        $patient_data = get_patients_medical_details($conn, 'patient_id', $fetch_user_data['id']);
+        $patient_data_history = get_patients_medical_details_history($conn, 'patient_id', $fetch_user_data['id']);
+        // $patient_data_count = get_only_logged_patient_data_on_status($conn, $fetch_user_data['id']);
+
+        // =============================== only for dashboard count....
+        $patient_total_appointment_count = patient_total_appointment_count($conn, 'patient_id', $fetch_user_data['id']);  
+        $patient_complete_appointment_count = patient_complete_appointment_count($conn, 'patient_id', $fetch_user_data['id']);  
+        $patient_pending_appointment_count = patient_pending_appointment_count($conn, 'patient_id', $fetch_user_data['id']);  
+
+
+    }else if($fetch_user_data['role'] == 'nurse'){
+        
+        $patient_data = get_patients_medical_details($conn, 'nurse_id', $fetch_user_data['id']);
+        $patient_data_history = get_patients_medical_details_history($conn, 'nurse_id', $fetch_user_data['id']);
+
+        // =============================== only for dashboard count....
+        $patient_total_appointment_count = patient_total_appointment_count($conn, 'nurse_id', $fetch_user_data['id']);  
+        $patient_complete_appointment_count = patient_complete_appointment_count($conn, 'nurse_id', $fetch_user_data['id']);  
+        $patient_pending_appointment_count = patient_pending_appointment_count($conn, 'nurse_id', $fetch_user_data['id']);  
+
+    }else if($fetch_user_data['role'] == 'receptionist'){
+
+        $patient_data = get_all_new_appointments($conn);
+        $patient_data_history = get_all_old_appointments($conn);
+        $patient_data_new_old = get_all_new_and_pending_appointments($conn);
+
+        // =============================== only for dashboard count....
+        $patient_total_appointment_count = all_count_receptionist($conn);  
+        $patient_complete_appointment_count = all_completed_receptionist($conn);  
+        $patient_pending_appointment_count = all_pending_receptionist($conn);  
+
+
+    }else if($fetch_user_data['role'] == 'doctor'){
+
+        $patient_data = get_patients_medical_details($conn, 'doctor_id', $fetch_user_data['id']);
+        $list_of_patients = get_list_of($conn, 'patient');
+        $list_of_nurses = get_list_of($conn, 'nurse');
+        $list_of_receptionists = get_list_of($conn, 'receptionist');
+        $all_patients_list = get_medical_details_of_all_patients($conn);
+        $patient_data_history = get_patients_medical_details_history($conn, 'doctor_id', $fetch_user_data['id']);
+        // $patient_data_history = get_all_patient_data_on_roles_history($conn, 'doctor_id', $fetch_user_data['id']);
+
+
+        // =============================== only for dashboard count....
+        $patient_total_appointment_count = patient_total_appointment_count($conn, 'doctor_id', $fetch_user_data['id']);  
+        $patient_complete_appointment_count = patient_complete_appointment_count($conn, 'doctor_id', $fetch_user_data['id']);  
+        $patient_pending_appointment_count = patient_pending_appointment_count($conn, 'doctor_id', $fetch_user_data['id']);  
+
+    }else if($fetch_user_data['role'] == 'admin'){
+
+        // get_all_patients_data($conn);
+        $patient_data = get_all_new_and_pending_appointments($conn);
+
+        $list_of_patients = get_list_of($conn, 'patient');
+        $list_of_nurses = get_list_of($conn, 'nurse');
+        $list_of_receptionists = get_list_of($conn, 'receptionist');
+        $list_of_doctors = get_list_of($conn, 'doctor');
+        
+        $all_patients_list = get_medical_details_of_all_patients($conn);
+        $patient_data_history = get_all_old_appointments($conn);
+        $patient_data_new_old = get_all_new_and_pending_appointments($conn);
+
+        // $patient_data_history = get_all_old_appointments($conn, 'doctor_id', $fetch_user_data['id']);
+        // $patient_data_history = get_all_patient_data_on_roles_history($conn, 'doctor_id', $fetch_user_data['id']);
+
+
+        // =============================== only for dashboard count....
+        $patient_total_appointment_count = all_count_receptionist($conn, 'doctor_id', $fetch_user_data['id']);  
+        $patient_complete_appointment_count = all_completed_receptionist($conn, 'doctor_id', $fetch_user_data['id']);  
+        $patient_pending_appointment_count = all_pending_receptionist($conn, 'doctor_id', $fetch_user_data['id']);  
+
+    }
 
 ?>
 
@@ -46,10 +119,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- =====  CSS ========= -->
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="<?= $path ?>assets/css/style.css">
     
     <!-- =====  CSS ========= -->
-    <link rel="stylesheet" href="../assets/css/registration.css">
+    <link rel="stylesheet" href="<?= $path ?>assets/css/registration.css">
     
     <!-- ===== Iconscout CSS ====== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
@@ -61,7 +134,7 @@
     <nav>
         <div class="logo-name">
             <div class = "logo-image">
-                <img src="../assets/images/logo.png" alt="">
+                <img src="<?= $path ?>assets/images/logo.png" alt="">
             </div>
 
             <span class="logo_name">HMS</span>
@@ -69,153 +142,63 @@
 
         <div class="menu-items">
             <ul class="nav-links">
-                <li>
-                    <a href="../index.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">Dashboard</span>
-                    </a>
-                </li>
                 <?php 
-                    if($fetch_user_data['role'] == "patient"){
-                ?>
                 
-                <li>
-                    <a href="./book_appointment.php">
-                        <i class="uil uil-plus-circle"></i>
-                        <span class="link-name">Book&nbsp;Appointment</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="../history.php">
-                        <i class="uil uil-chart"></i>
-                        <span class="link-name">History</span>
-                    </a>
-                </li>
+                    if($fetch_user_data['role'] == "patient"){
+                        foreach($patient as $key => $value) {
+                ?>
+                    <li>
+                        <a href="<?= $key ?>">
+                            <i class="uil uil-plus-circle"></i>
+                            <span class="link-name"><?= $value ?></span>
+                        </a>
+                    </li>
                 <?php
+                        }
                     }else if ($fetch_user_data['role'] == "nurse"){
+                        foreach($nurse as $key => $value) {
                 ?>
-
-                <li>
-                    <a href="./view_appointments.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">View&nbsp;Appointments</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="../history.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">History</span>
-                    </a>
-                </li>
-                <?php 
+                    <li>
+                        <a href="<?= $key ?>">
+                            <i class="uil uil-plus-circle"></i>
+                            <span class="link-name"><?= $value ?></span>
+                        </a>
+                    </li>
+                <?php
+                        }
                     }else if($fetch_user_data['role'] == "receptionist"){
+                        foreach($receptionist as $key => $value) {
                 ?>
-
-
-                <li>
-                    <a href="./make_appointments.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">Make&nbsp;Appointments</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="../history.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">History</span>
-                    </a>
-                </li>
-
-                <?php 
+                    <li>
+                        <a href="<?= $key ?>">
+                            <i class="uil uil-plus-circle"></i>
+                            <span class="link-name"><?= $value ?></span>
+                        </a>
+                    </li>
+                <?php
+                        }
                     }else if($fetch_user_data['role'] == "doctor"){
-                ?> 
-                <li>
-                    <a href="./patients_appointments.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">Patient's&nbsp;Appointments</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./add_nurse.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">Add&nbsp;Nurse</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./add_receptionist.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">Add&nbsp;Receptionist</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./patients_list.php">
-                        <i class="uil uil-chart"></i>
-                        <span class="link-name">Patients&nbsp;Lists</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./nurses_list.php">
-                        <i class="uil uil-chart"></i>
-                        <span class="link-name">Nurse&nbsp;Lists</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./receptionists_list.php">
-                        <i class="uil uil-chart"></i>
-                        <span class="link-name">Receptionist&nbsp;Lists</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="../history.php">
-                        <i class="uil uil-chart"></i>
-                        <span class="link-name">History</span>
-                    </a>
-                </li>
-                <?php 
-                    }else if($fetch_user_data['role'] == "admin"){
+                        foreach($doctor as $key => $value) {
                 ?>
-                <li>
-                    <a href="./admins_appointments.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">Patient's&nbsp;Appointments</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./admin/add_nurse.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">Add&nbsp;Nurse</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./admin/add_receptionist.php">
-                        <i class="uil uil-estate"></i>
-                        <span class="link-name">Add&nbsp;Receptionist</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./admins_list.php">
-                        <i class="uil uil-chart"></i>
-                        <span class="link-name">Patients&nbsp;Lists</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./admin/nurses_list.php">
-                        <i class="uil uil-chart"></i>
-                        <span class="link-name">Nurse&nbsp;Lists</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./admin/receptionists_list.php">
-                        <i class="uil uil-chart"></i>
-                        <span class="link-name">Receptionist&nbsp;Lists</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="./admin/doctors_list.php">
-                        <i class="uil uil-chart"></i>
-                        <span class="link-name">Doctors&nbsp;Lists</span>
-                    </a>
-                </li>
-                <?php 
+                    <li>
+                        <a href="<?= $key ?>">
+                            <i class="uil uil-plus-circle"></i>
+                            <span class="link-name"><?= $value ?></span>
+                        </a>
+                    </li>
+                <?php
+                        }
+                    }else if($fetch_user_data['role'] == "admin"){
+                        foreach($admin as $key => $value) {
+                ?>
+                    <li>
+                        <a href="<?= $key ?>">
+                            <i class="uil uil-plus-circle"></i>
+                            <span class="link-name"><?= $value ?></span>
+                        </a>
+                    </li>
+                <?php
+                        }
                     }
                 ?>
 
@@ -249,7 +232,7 @@
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
-            <div class="search-box">
+            <div class="search-box" style = "<?= $display ?? "" ?>">
                 <i class="uil uil-search"></i>
                 <input type="text" placeholder="Search here....">
             </div>
@@ -257,12 +240,12 @@
                 <div>
                     <?php echo $fetch_user_data['username'] ?>
                 </div>
-                <img src="../assets/images/profile.png">                    
+                <img src="<?= $path ?>assets/images/<?= $fetch_user_data['profile_pic'] ?? 'profile.png' ?>">                    
                 <i class="uil uil-angle-down"></i>
             </div>
         </div>
         <div id="model-box">
-            <a href = "../setting_page.php">Settings</a>
+            <a href = "<?= $path ?>setting_page.php">Settings</a>
         </div>
 
 <!-- header file's common part ends here -->

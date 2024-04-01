@@ -1,10 +1,11 @@
 <?php 
+    
+    // ==================== roles 
+    $path = "../";
 
+    include("./roles.php");
     include("../header.php");
-    // $date =  date("Y-m-d");
-    // $fetch_patient_data = "SELECT * FROM `patients_medical_details` WHERE appointment_date > '{$date}' ORDER BY appointment_date, appointment_time";
-    // $patient_data = mysqli_query($conn, $fetch_patient_data);
-    $patient_data = get_all_patients_data_not_history($conn);
+
 
 ?>
 
@@ -55,8 +56,8 @@
                     <tbody>
                         
                         <?php 
-                            if(mysqli_num_rows($patient_data) > 0){
-                                while($data = mysqli_fetch_assoc($patient_data)){
+                            if(mysqli_num_rows($patient_data_new_old) > 0){
+                                while($data = mysqli_fetch_assoc($patient_data_new_old)){
                         ?> 
                         
                         <!-- This table body data will be fetched by dynamically -->
@@ -64,11 +65,8 @@
                             <td class="data names">
                                 <div class="data-list">
                                     <?php 
-                                        // getting data from user's table if any user role is logged in 
-                                        $sql = "SELECT * FROM users_data WHERE id = {$data['patient_id']}";
-                                        $query = mysqli_query($conn, $sql);
-                                        $value = mysqli_fetch_assoc($query);
-                                        echo $value['firstName'] . " " . $value['lastName'];
+                                        $patient_details = get_user_data($conn, $data['patient_id']);
+                                        echo($patient_details['firstName'] ." " . $patient_details['lastName']);
                                     ?>
                                 </div>
                             </td>
@@ -88,12 +86,11 @@
                                 <div class="data-list">
                                     <?php  
                                         $doctor_details = get_user_data($conn, $data['doctor_id']);
-                                        $doctor = mysqli_fetch_assoc($doctor_details);
-                                        if(isset($doctor['firstName'])){
-                                            echo $doctor['firstName'] . " " . $doctor['lastName'];
-                                        }else{
+                                        if(isset($doctor_details)):
+                                            echo $doctor_details['firstName'] . " " . $doctor_details['lastName'];
+                                        else:
                                             echo "---";
-                                        }
+                                        endif;
                                     ?>
                                 </div>
                             </td>

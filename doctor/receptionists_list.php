@@ -1,20 +1,11 @@
 <?php 
-    session_start();
-    if(!$_SESSION['user']){
-        header("Location: login.html");
-    }
+    
+    // ==================== roles 
+    $path = "../";
 
-    if(isset($_POST['logout'])){
-        session_unset();
-        session_destroy();
-        header("Location: login.html");
-    }
-
+    include("./roles.php");
     include("../header.php");
-    
-    // getting all user data - the user is one who is logged in
-    $roles_data = get_all_roles_data($conn, 'receptionist');
-    
+ 
 ?>
 
 <!-- header file's common part ends here -->
@@ -55,8 +46,8 @@
                     <tbody>
                         
                         <?php 
-                            if(mysqli_num_rows($roles_data) > 0){
-                                while($data = mysqli_fetch_assoc($roles_data)){
+                            if(mysqli_num_rows($list_of_receptionists) > 0){
+                                while($data = mysqli_fetch_assoc($list_of_receptionists)){
                         ?> 
                         
                         <!-- This table body data will be fetched by dynamically -->

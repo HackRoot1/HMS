@@ -8,7 +8,7 @@
         $password = $_POST['password'];
 
         
-        $register_query = "INSERT INTO users_data(firstName, lastName, email, username, password) VALUES('{$firstName}','{$lastName}','{$email}','{$username}', '{$password}')";
+        $register_query = "INSERT INTO users_data (role,firstName, lastName, email, username, password) VALUES('patient', '{$firstName}','{$lastName}','{$email}','{$username}', '{$password}')";
 
         if(mysqli_query($conn, $register_query)){
             session_start();
@@ -16,7 +16,7 @@
             header("Location: index.php");
             exit();
         }else{
-            echo "Please fill inputs correctly";
+            echo "Please fill inputs correctly" . mysqli_error($conn);
         }
 
     }
@@ -222,7 +222,7 @@
                 Or
                 <hr>
             </div>
-            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id = "registration_form">
+            <form action="" method="POST" id = "registration_form">
 
                 <div class = "form-details">
                     <div>

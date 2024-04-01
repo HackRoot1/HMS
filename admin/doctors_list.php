@@ -17,7 +17,7 @@
             <div class="activity">
                 <div class="title">
                     <i class="uil uil-clock-two"></i>
-                    <span class="text">Nurses Lists</span>
+                    <span class="text">Doctor's Lists</span>
                 </div>
 
                 <div id = "result-data">
@@ -50,8 +50,8 @@
                     <tbody>
                         
                         <?php 
-                            if(mysqli_num_rows($list_of_nurses) > 0){
-                                while($data = mysqli_fetch_assoc($list_of_nurses)){
+                            if(mysqli_num_rows($list_of_doctors) > 0){
+                                while($data = mysqli_fetch_assoc($list_of_doctors)){
                         ?> 
                         
                         <!-- This table body data will be fetched by dynamically -->
