@@ -1,6 +1,5 @@
 <?php 
     
-    // ==================== roles 
     $path = "../";
 
     include("./roles.php");
@@ -44,7 +43,7 @@
                                 <div class="data-title">Action</div>
                             </th>
                         </tr>
-                    </thead>
+                    </thead> 
 
                     <tbody>
                         
@@ -71,7 +70,8 @@
                             </td>
                             <td class="data status">
                                 <div class="data-list">
-                                    <a href="">View</a>
+                                    <a href="./delete_nurse.php?nurse_id=<?= $data['id'] ?>">Delete</a>
+                                    <a href="./add_nurse.php?nurse_id=<?= $data['id'] ?>">Edit</a>
                                 </div>
                             </td>
                         </tr>

@@ -1,6 +1,5 @@
 <?php 
     
-    // ==================== roles 
     $path = "../";
 
     include("./roles.php");
@@ -58,8 +57,6 @@
                             if(mysqli_num_rows($all_patients_list) > 0){
                                 while($data = mysqli_fetch_assoc($all_patients_list)){
                                     $unique_data = get_user_data($conn, $data['patient_id']);
-                                    // $data2 = mysqli_fetch_assoc($unique_data);
-                                    // print_r($unique_data);
                         ?> 
                         
                         <!-- This table body data will be fetched by dynamically -->
@@ -88,7 +85,7 @@
                             </td>
                             <td class="data status">
                                 <div class="data-list">
-                                    <a href="">
+                                    <a href="../view_details.php?p_id=<?= $data['id'] ?>">
                                         View
                                     </a>
                                 </div>

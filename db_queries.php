@@ -55,6 +55,36 @@
         }
     }
     
+    // fetch total appointments of a patient
+    function patient_booked_appointment_count($conn, $role_column, $id) {
+        $query = "SELECT * FROM `patients_medical_details` WHERE $role_column = '{$id}' AND status = 'booked'";
+        if(mysqli_query($conn, $query)){
+            return mysqli_query($conn, $query);
+        } else{
+            echo ("Query Failed");
+        }
+    }
+
+    // fetch total appointments of a patient
+    function patient_cancelled_by_u_appointment_count($conn, $role_column, $id) {
+        $query = "SELECT * FROM `patients_medical_details` WHERE $role_column = '{$id}' AND status = 'cancelled by user'";
+        if(mysqli_query($conn, $query)){
+            return mysqli_query($conn, $query);
+        } else{
+            echo ("Query Failed");
+        }
+    }
+
+    // fetch total appointments of a patient
+    function patient_cancelled_by_d_appointment_count($conn, $role_column, $id) {
+        $query = "SELECT * FROM `patients_medical_details` WHERE $role_column = '{$id}' AND status = 'cancelled by doctor'";
+        if(mysqli_query($conn, $query)){
+            return mysqli_query($conn, $query);
+        } else{
+            echo ("Query Failed");
+        }
+    }
+    
 // ====================================== end ================================================================
 
 
@@ -103,7 +133,7 @@
 
     // Fetching pending data
     function get_patients_medical_details($conn, $role_column, $role_id){
-        $query = "SELECT * FROM `patients_medical_details` WHERE $role_column = '{$role_id}' AND status = 'pending' ORDER BY appointment_date, appointment_time DESC";
+        $query = "SELECT * FROM `patients_medical_details` WHERE $role_column = '{$role_id}' AND status IN ('pending', 'booked') ORDER BY appointment_date, appointment_time DESC";
         if(mysqli_query($conn, $query)){
             return mysqli_query($conn, $query);
         }else{
@@ -119,7 +149,7 @@
         // get current time
         $time = date("h:i:s");
         
-        $query = "SELECT * FROM `patients_medical_details` WHERE $role_column = '{$role_id}' AND status <> 'pending' ORDER BY appointment_date, appointment_time DESC";
+        $query = "SELECT * FROM `patients_medical_details` WHERE $role_column = '{$role_id}' AND status NOT IN ('pending', 'booked') ORDER BY appointment_date, appointment_time DESC";
         if(mysqli_query($conn, $query)){
             return mysqli_query($conn, $query);
         }else{
@@ -180,6 +210,37 @@
             echo ("Query Failed");
         }
     }
+
+        // fetch total appointments of a patient
+        function all_booked_appointment_count($conn) {
+            $query = "SELECT * FROM `patients_medical_details` WHERE status = 'booked'";
+            if(mysqli_query($conn, $query)){
+                return mysqli_query($conn, $query);
+            } else{
+                echo ("Query Failed");
+            }
+        }
+    
+        // fetch total appointments of a patient
+        function all_cancelled_by_u_appointment_count($conn) {
+            $query = "SELECT * FROM `patients_medical_details` WHERE status = 'cancelled by user'";
+            if(mysqli_query($conn, $query)){
+                return mysqli_query($conn, $query);
+            } else{
+                echo ("Query Failed");
+            }
+        }
+    
+        // fetch total appointments of a patient
+        function all_cancelled_by_d_appointment_count($conn) {
+            $query = "SELECT * FROM `patients_medical_details` WHERE status = 'cancelled by doctor'";
+            if(mysqli_query($conn, $query)){
+                return mysqli_query($conn, $query);
+            } else{
+                echo ("Query Failed");
+            }
+        }
+
 
     // fetch newly added appointments of patient's  i.e. index page.
     function get_all_new_appointments($conn){
@@ -253,5 +314,15 @@
         }
     }
 
+
+    // Fetch individual patient's details
+    function get_patient_details($conn, $id) {
+        $query = "SELECT * FROM `patients_medical_details` WHERE id = '{$id}';";
+        if(mysqli_query($conn, $query)){
+            return mysqli_query($conn, $query);
+        }else{
+            echo "Query Failed";
+        }
+    }
 // ================================================= End ============================================================
 

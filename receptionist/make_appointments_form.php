@@ -21,7 +21,8 @@
                                 nurse_id = {$_POST['nurse']},
                                 doctor_id = {$_POST['doctor']},
                                 appointment_date = '{$_POST['appoint_date']}',
-                                appointment_time = '{$_POST['appoint_time']}'
+                                appointment_time = '{$_POST['appoint_time']}',
+                                status = 'booked'
                                 WHERE
                                     id = {$id}
                                 ";
@@ -35,9 +36,7 @@
 
     $fetch_data = mysqli_fetch_assoc($fetch_query_data);
 
-    // print_r($fetch_data);
-    // echo $fetch_data['patient_id'];
-    // exit();
+    
     $fetch_personal_data_query = "SELECT * FROM users_data WHERE id = {$fetch_data['patient_id']}";
     $fetch_personal_data = mysqli_query($conn, $fetch_personal_data_query);
     $fetch_personal_detail = mysqli_fetch_assoc($fetch_personal_data); 
@@ -50,11 +49,6 @@
     // fetching nurse's details
     $fetch_nurse_query = "SELECT * FROM users_data WHERE role = 'nurse'";
     $fetch_nurse_query_data = mysqli_query($conn, $fetch_nurse_query);
-
-
-
-
-
 
 
     
@@ -116,11 +110,11 @@
                 </div>
                 <div>
                     <label for="appoint_date">Appointment Date</label>
-                    <input type="date" id = "appoint_date" name = "appoint_date" >
+                    <input type="date" id = "appoint_date" name = "appoint_date" value = "<?php echo $fetch_data['appointment_date'] ?? "" ?>">
                 </div>
                 <div>
                     <label for="appoint_time">Appointment Time</label>
-                    <input type="time" id = "appoint_time" name = "appoint_time" >
+                    <input type="time" id = "appoint_time" name = "appoint_time" value = "<?php echo $fetch_data['appointment_time'] ?? "" ?>">
                 </div>
                 <div>
                     <label for="doctor">Select Doctor</label>

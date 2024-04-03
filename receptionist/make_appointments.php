@@ -96,8 +96,7 @@
                             </td>
                             <td class="data status">
                                 <div class="data-list">
-                                    <!-- <button id = "view_btn" data-viewid = "<?php echo $fetch_user_data['id'] ?>">View</button> -->
-                                    <a href = "./make_appointments_form.php?id=<?php echo $data['id'] ?>">View</a>
+                                    <a href = "./make_appointments_form.php?id=<?php echo $data['id'] ?>">Edit</a>
                                 </div>
                             </td>
                         </tr>

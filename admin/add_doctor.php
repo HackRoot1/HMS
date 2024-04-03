@@ -7,7 +7,7 @@
 
     include("../config.php");
     // cannot use header if something is displayed on screen before using header()
-    if(isset($_POST['edit_receptionist'])){
+    if(isset($_POST['edit_doctor'])){
 
         $query = "  UPDATE
                         `users_data`
@@ -15,38 +15,39 @@
                         firstName = '{$_POST['fname']}',
                         lastName = '{$_POST['lname']}',
                         email = '{$_POST['email']}',
-                        dob = '{$_POST['dob']}',
+                        shift = '{$_POST['shift']}',
                         contact_no = '{$_POST['m_no']}'
                     WHERE
-                        id = '{$_POST['receptionist_id']}'";
+                        id = '{$_POST['doctor_id']}'";
 
         if(mysqli_query($conn, $query) or die("Query Failed")) {
-            header("Location: ../doctor/receptionists_list.php");
+            header("Location: ../admin/doctors_list.php");
             exit();
         }
     }
+
 
     include("../header.php");
     include("../generate_pass.php");
 
     // Example: Generate a password with a length of 16 characters
     $password = generatePassword(16);
+    
 
-
-
-    if(isset($_POST['add_receptionist'])){
+    
+    if(isset($_POST['add_doctor'])){
 
 
         $query = "  INSERT INTO 
                         `users_data`
-                        (role, firstName, lastName, email, dob, contact_no, password) 
+                        (role, firstName, lastName, email, shift, contact_no, password) 
                     VALUES
                         (
                             '{$_POST['role']}',
                             '{$_POST['fname']}',
                             '{$_POST['lname']}',
                             '{$_POST['email']}',
-                            '{$_POST['dob']}',
+                            '{$_POST['shift']}',
                             '{$_POST['m_no']}',
                             '{$password}'
                         )";
@@ -54,10 +55,9 @@
         mysqli_query($conn, $query) or die("Query Failed");
     }
 
-
-    if(isset($_GET['receptionist_id'])) {
-        $receptionist_id = $_GET['receptionist_id'];
-        $receptionist_data = get_user_data($conn, $receptionist_id);
+    if(isset($_GET['doctor_id'])) {
+        $doctor_id = $_GET['doctor_id'];
+        $doctor_data = get_user_data($conn, $doctor_id);
     }
 
 
@@ -69,7 +69,7 @@
             <div class="overview">
                 <div class="title">
                     <i class="uil uil-tachometer-fast-alt"></i>
-                    <span class="text">Add Receptionist</span>
+                    <span class="text">Add Nurse</span>
                 </div>
             </div>
 
@@ -80,32 +80,33 @@
 
             <form action="" method="POST" id = "form-data">
                 <div>
-                    <input type="hidden" name = "<?php echo $receptionist_data['id'] ? "receptionist_id" : "role" ?>" value = "<?php echo $receptionist_data['id'] ? $receptionist_data['id'] : "receptionist" ?>">
+                    <input type="hidden" name = "<?php echo $doctor_data['id'] ? "doctor_id" : "role" ?>" value = "<?php echo $doctor_data['id'] ? $doctor_data['id'] : "doctor" ?>">
                 </div>
+
                 <div>
                     <label for="fname">First Name</label>
-                    <input type="text" id = "fname" name = "fname" value = "<?= $receptionist_data['firstName'] ?? "" ?>">
+                    <input type="text" id = "fname" name = "fname" value = "<?= $doctor_data['firstName'] ?? "" ?>">
                 </div>
                 <div>
                     <label for="lname">Last Name</label>
-                    <input type="text" id = "lname" name = "lname" value = "<?= $receptionist_data['lastName'] ?? "" ?>" >
+                    <input type="text" id = "lname" name = "lname" value = "<?= $doctor_data['lastName'] ?? "" ?>">
                 </div>
                 <div>
                     <label for="email">E-mail</label>
-                    <input type="text" id = "email" name = "email" value = "<?= $receptionist_data['email'] ?? "" ?>">
+                    <input type="text" id = "email" name = "email" value = "<?= $doctor_data['email'] ?? "" ?>">
                 </div>
                 <div>
-                    <label for="dob">Date of Birth</label>
-                    <input type="date" id = "dob" name = "dob" value = "<?= $receptionist_data['dob'] ?? "" ?>" >
+                    <label for="shift">Shift</label>
+                    <input type="text" id = "shift" name = "shift" value = "<?= $doctor_data['shift'] ?? "" ?>">
                 </div>
                 <div>
-                    <label for="m_no">Contact No.</label>
-                    <input type="text" id = "m_no" name = "m_no" value = "<?= $receptionist_data['contact_no'] ?? "" ?>" >
+                    <label for="m_no">Contact No.:</label>
+                    <input type="text" id = "m_no" name = "m_no" value = "<?= $doctor_data['contact_no'] ?? "" ?>">
                 </div>
 
                 <div class = "form-btn">
                     <input type="reset" name = "reset">
-                    <input type="submit" value="Submit" name = "<?= isset($receptionist_data['id']) ? "edit_receptionist" : "add_receptionist" ?>">
+                    <input type="submit" value="Submit" name = "<?= isset($doctor_data['id']) ? "edit_doctor" : "add_doctor" ?>">
                 </div>
             </form>
     

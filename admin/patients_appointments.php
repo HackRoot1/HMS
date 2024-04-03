@@ -1,6 +1,5 @@
 <?php 
     
-    // ==================== roles 
     $path = "../";
     include("./roles.php");
     include("../header.php");
@@ -100,7 +99,7 @@
                             </td>
                             <td class="data status">
                                 <div class="data-list">
-                                    <a href="">
+                                    <a href="../view_details.php?p_id=<?= $data['id'] ?>">
                                         View
                                     </a>
                                 </div>

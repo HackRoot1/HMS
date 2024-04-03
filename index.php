@@ -39,6 +39,34 @@
                         <?= $patient_pending_appointment_count->num_rows ?? "0"  ?>
                     </span>
                 </div>          
+                
+                <?php if($patient_booked_appointment_count->num_rows > 0): ?>
+                    <div class="box box1">
+                        <span class="text">Booked Appointments :</span>
+                        <span class="number">
+                            <?= $patient_booked_appointment_count->num_rows ?? "0"  ?>
+                        </span>
+                    </div>          
+                <?php endif; ?>
+                
+                <?php if($patient_cancelled_by_u_appointment_count->num_rows > 0): ?>
+                <div class="box box2">
+                    <span class="text">Cancelled By User Appointments :</span>
+                    <span class="number">
+                        <?= $patient_cancelled_by_u_appointment_count->num_rows ?? "0"  ?>
+                    </span>
+                </div>          
+                <?php endif; ?>
+                
+                <?php if($patient_cancelled_by_d_appointment_count->num_rows > 0): ?>
+                <div class="box box3">
+                    <span class="text">Cancelled By Doctor Appointments :</span>
+                    <span class="number">
+                        <?= $patient_cancelled_by_d_appointment_count->num_rows ?? "0"  ?>
+                    </span>
+                </div>          
+                <?php endif; ?>
+                
             </div>
             
 
@@ -147,9 +175,11 @@
                             </td>
                             <td class="data status">
                                 <div class="data-list">
-                                    <a href="">
-                                        View
-                                    </a>
+                                    <?php if($fetch_user_data['role'] == "receptionist"): ?>
+                                        <a href = "./receptionist/make_appointments_form.php?id=<?php echo $data['id'] ?>">View</a>
+                                    <?php else: ?>
+                                        <a href="./view_details.php?p_id=<?= $data['id'] ?>">View</a>
+                                    <?php endif; ?>
                                 </div>
                             </td>
                         </tr>

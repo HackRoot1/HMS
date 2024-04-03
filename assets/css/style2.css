@@ -1006,3 +1006,14 @@ body.dark .menu-items li form div:hover input{
 #result-data{
     color: var(--text-color);
 }
+
+
+
+#patient-details {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    height: calc(100vh - 100px);
+    top: 100px;
+    position: relative;
+}

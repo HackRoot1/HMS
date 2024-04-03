@@ -18,9 +18,7 @@
                 <form action="./update_setting_page.php" method = "POST" enctype="multipart/form-data">
                     <div>
                         <label for="preview">Profile Preview: </label>   
-                        <img src="<?= $path ?>assets/images/<?php echo $fetch_user_data['profile_pic'] ?? "" ?>" id="previewImg" alt="Preview Image" style="max-width: 100px; max-height: 100px;">
-                           
-                        <!-- <img src="../assets/images/profile.png" alt="Profile pic" width="100px" height="100px"> -->
+                        <img src="<?= $path ?>assets/images/<?php echo $fetch_user_data['profile_pic'] ?? "" ?>" id="previewImg" alt="Preview Image" style="max-width: 100px; max-height: 100px;">                           
                     </div>
                     
                     <div>

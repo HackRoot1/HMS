@@ -1,6 +1,5 @@
 <?php 
     
-    // ==================== roles 
     $path = "../";
 
     include("./roles.php");
@@ -40,11 +39,9 @@
                             <th class="data joined">
                                 <div class="data-title">Symptoms</div>
                             </th>
-                            <th class="data type">
-                                <div class="data-title">Date</div>
-                            </th>
+                           
                             <th class="data status">
-                                <div class="data-title">Time</div>
+                                <div class="data-title">Status</div>
                             </th>
                             <th class="data status">
                                 <div class="data-title">Action</div>
@@ -58,8 +55,6 @@
                             if(mysqli_num_rows($all_patients_list) > 0){
                                 while($data = mysqli_fetch_assoc($all_patients_list)){
                                     $unique_data = get_user_data($conn, $data['patient_id']);
-                                    // $data2 = mysqli_fetch_assoc($unique_data);
-                                    // print_r($unique_data);
                         ?> 
                         
                         <!-- This table body data will be fetched by dynamically -->
@@ -80,15 +75,13 @@
                             <td class="data type">
                                 <div class="data-list"><?php echo $data['symptoms'] ?></div>
                             </td>
-                            <td class="data type">
-                                <div class="data-list"><?php echo $data['appointment_date'] ?></div>
-                            </td>
+                            
                             <td class="data status">
-                                <div class="data-list"><?php echo $data['appointment_time'] ?></div>
+                                <div class="data-list"><?php echo $data['status'] ?></div>
                             </td>
                             <td class="data status">
                                 <div class="data-list">
-                                    <a href="">
+                                    <a href="../view_details.php?p_id=<?= $data['id'] ?>">
                                         View
                                     </a>
                                 </div>
